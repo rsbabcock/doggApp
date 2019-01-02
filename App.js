@@ -1,33 +1,51 @@
 import React from 'react';
-import { StyleSheet, TextInput, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, TextInput, View } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import DefaultImages from './DefaultImages';
 import { getBreedImages } from './api';
 import SearchImages from './SearchImages';
+import * as Animatable  from 'react-native-animatable';
 
 export default class App extends React.Component {
   state = {
     text: "Search for a dog Breed",
     isLoading: false,
     images: [],
-    searchComplete: false
+    searchComplete: false,
+  }
+
+  animations() {
+    this.state.rotate.interpolate({
+      inputRange: [0, 360],
+      outputRange: ['0deg', '360deg'],
+    })
   }
 
   _renderImages() {
     if (this.state.isLoading) {
       return (
         <View style={styles.container}>
-          <ActivityIndicator size='large' color="#403E3E" />
-        </View>
+          <Animatable.View 
+           animation="rotate"
+           easing="linear"
+           iterationCount="infinite"
+           >
+            <Icon name="dog" size={200} />
+          </Animatable.View>
+        </View >
       )
     }
-    if(this.state.searchComplete){
-      return(
+    if (this.state.searchComplete) {
+      return (
         <SearchImages images={this.state.images} />
       )
     }
     else {
       return (
-        <DefaultImages />
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <Icon name="heart" style={styles.heartButton} />
+          <DefaultImages />
+        </View>
       )
     }
   }
@@ -36,8 +54,7 @@ export default class App extends React.Component {
     this.setState({ text: '', isLoading: true })
   }
 
-  _onSubmit(){
-    console.log(this.state.text)
+  _onSubmit() {
     getBreedImages(this.state.text).then(images => this.setState({ images: images, isLoading: false, searchComplete: true }))
     // this.setState({isLoading: false})
   }
@@ -51,7 +68,7 @@ export default class App extends React.Component {
             style={styles.input}
             placeholder={this.state.text}
             onChangeText={(text) => this.setState({ text })}
-            onFocus={()=>this._onSearch()}
+            onFocus={() => this._onSearch()}
             onSubmitEditing={() => this._onSubmit()}
             value={this.state.text}
           />
@@ -96,5 +113,9 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     color: 'black',
     textDecorationStyle: 'double'
+  },
+  heartButton: {
+    fontSize: 50,
+    fontWeight: 'bold'
   }
 })

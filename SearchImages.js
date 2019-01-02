@@ -5,8 +5,8 @@ import CustomImage from './CustomImage';
 class SearchImages extends Component {
 
     render() {
-        const images = this.props.images.slice(0, 3)
-        const images2 = this.props.images.slice(3, 6)
+        const images = this.props.images.slice(0, 4)
+        const images2 = this.props.images.slice(4, 8)
         return (
             <View style={styles.wrapper}>
                 <View >

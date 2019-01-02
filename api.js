@@ -13,7 +13,7 @@ export function getRandomImage() {
 
 export function getBreedImages(breed) {
     const apiBreed = breed.toLowerCase()
-    const breedUrl = `https://dog.ceo/api/breed/${apiBreed}/images/random/6`
+    const breedUrl = `https://dog.ceo/api/breed/${apiBreed}/images/random/8`
     return fetch(breedUrl)
         .then(response => response.json())
         .then(
